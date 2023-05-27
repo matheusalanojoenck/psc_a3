@@ -2,8 +2,9 @@
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
+		Aluno a = new Aluno("Matheus", "08185736944", "1");
+		Professor p = new Professor("Prof 1", "cpf prof", "001");
+		System.out.println(a.toString());
+		System.out.println(p.toString());
+	}	
 }
