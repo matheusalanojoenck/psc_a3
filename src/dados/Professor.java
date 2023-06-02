@@ -1,3 +1,4 @@
+package dados;
 
 public class Professor extends Pessoa{
 	private String cod_funcionario;

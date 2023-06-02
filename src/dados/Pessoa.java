@@ -1,3 +1,4 @@
+package dados;
 
 public abstract class Pessoa {
 	private String cpf;

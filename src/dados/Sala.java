@@ -1,3 +1,4 @@
+package dados;
 
 public class Sala {
 	private  String nome;

@@ -1,3 +1,4 @@
+package dados;
 
 public enum DiasSemana {
 	SEGUNDA_FEIRA,
