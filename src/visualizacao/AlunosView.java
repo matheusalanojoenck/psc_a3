@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class App {
+public class AlunosView {
 
 	private JFrame frame;
 
@@ -15,7 +15,7 @@ public class App {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					App window = new App();
+					AlunosView window = new AlunosView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class App {
 	/**
 	 * Create the application.
 	 */
-	public App() {
+	public AlunosView() {
 		initialize();
 	}
 
@@ -38,7 +38,6 @@ public class App {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
 	}
 
 }
