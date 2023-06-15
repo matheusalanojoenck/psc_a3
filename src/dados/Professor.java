@@ -3,11 +3,10 @@ package dados;
 public class Professor extends Pessoa{
 	private String cod_funcionario;
 	
-	public Professor (String nome, String cpf, String cod_funcionario) {
+	public Professor (String nome, String cpf) {
 		super();
 		super.setNome(nome);
 		super.setCpf(cpf);
-		this.cod_funcionario = cod_funcionario;
 	}
 
 	public String getCod_funcionario() {

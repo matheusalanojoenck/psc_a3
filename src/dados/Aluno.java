@@ -3,11 +3,10 @@ package dados;
 public class Aluno extends Pessoa{
 	private String matricula;
 	
-	public Aluno(String nome, String cpf, String matricula) {
+	public Aluno(String nome, String cpf) {
 		super();
 		super.setNome(nome);
 		super.setCpf(cpf);
-		this.matricula = matricula;
 	}
 
 	public String getMatricula() {
