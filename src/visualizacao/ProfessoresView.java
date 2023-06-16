@@ -15,12 +15,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import dados.Aluno;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-public class ProfessorView {
+public class ProfessoresView {
 
-	private JFrame frame;
+	private JFrame frmProfessores;
 	private JTextField nomeTextField;
 	private JTextField cpfTextField;
 	private JTextField enderecoTextField;
@@ -35,8 +34,8 @@ public class ProfessorView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProfessorView window = new ProfessorView();
-					window.frame.setVisible(true);
+					ProfessoresView window = new ProfessoresView();
+					window.frmProfessores.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,7 +46,7 @@ public class ProfessorView {
 	/**
 	 * Create the application.
 	 */
-	public ProfessorView() {
+	public ProfessoresView() {
 		initialize();
 	}
 
@@ -55,12 +54,13 @@ public class ProfessorView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmProfessores = new JFrame();
+		frmProfessores.setTitle("Professores");
+		frmProfessores.setBounds(100, 100, 450, 300);
+		frmProfessores.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelButtons = new JPanel();
-		frame.getContentPane().add(panelButtons, BorderLayout.SOUTH);
+		frmProfessores.getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
@@ -70,10 +70,6 @@ public class ProfessorView {
 				String endereco = enderecoTextField.getText();
 				String email = emailTextField.getText();
 				String celular = celularTextField.getText();
-				Aluno aluno = new Aluno(nome, cpf);
-				aluno.setEndereco(endereco);
-				aluno.setEmail(email);
-				aluno.setCelular(celular);
 				
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.addRow(new Object [] {id, nome, cpf, endereco, email, celular});
@@ -83,9 +79,7 @@ public class ProfessorView {
 				enderecoTextField.setText("");
 				emailTextField.setText("");
 				celularTextField.setText("");
-				
-				System.out.println(aluno.toString());
-				
+					
 			}
 		});
 		panelButtons.add(adicionarButton);
@@ -105,7 +99,7 @@ public class ProfessorView {
 		panelButtons.add(deletarButton);
 		
 		JPanel panelTextFields = new JPanel();
-		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
+		frmProfessores.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
@@ -200,7 +194,7 @@ public class ProfessorView {
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
-		frame.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
+		frmProfessores.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {

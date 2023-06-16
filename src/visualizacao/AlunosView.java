@@ -20,7 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class AlunosView {
 
-	private JFrame frame;
+	private JFrame frmAlunos;
 	private JTextField nomeTextField;
 	private JTextField cpfTextField;
 	private JTextField enderecoTextField;
@@ -36,7 +36,7 @@ public class AlunosView {
 			public void run() {
 				try {
 					AlunosView window = new AlunosView();
-					window.frame.setVisible(true);
+					window.frmAlunos.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,12 +55,13 @@ public class AlunosView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAlunos = new JFrame();
+		frmAlunos.setTitle("Alunos");
+		frmAlunos.setBounds(100, 100, 450, 300);
+		frmAlunos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelButtons = new JPanel();
-		frame.getContentPane().add(panelButtons, BorderLayout.SOUTH);
+		frmAlunos.getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
@@ -105,7 +106,7 @@ public class AlunosView {
 		panelButtons.add(deletarButton);
 		
 		JPanel panelTextFields = new JPanel();
-		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
+		frmAlunos.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
@@ -200,7 +201,7 @@ public class AlunosView {
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
-		frame.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
+		frmAlunos.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
