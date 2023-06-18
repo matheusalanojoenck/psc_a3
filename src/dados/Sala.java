@@ -1,15 +1,15 @@
 package dados;
 
 public class Sala {
-	private  String nome;
+	private int id;
 	private String local;
 	private int capacidade;
 	
-	public String getNome() {
-		return nome;
+	public int getId() {
+		return id;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getLocal() {
 		return local;
@@ -23,9 +23,9 @@ public class Sala {
 	public void setCapacidade(int capacidade) {
 		this.capacidade = capacidade;
 	}
+	
 	@Override
 	public String toString() {
-		return "Sala [nome=" + nome + ", local=" + local + ", capacidade=" + capacidade + "]";
+		return "Sala [id=" + id + ", local=" + local + ", capacidade=" + capacidade + "]";
 	}
-	
 }

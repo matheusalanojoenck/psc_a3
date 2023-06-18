@@ -6,6 +6,7 @@ public abstract class Pessoa {
 	private String endereco;
 	private String email;
 	private String celular;
+	
 	public String getCpf() {
 		return cpf;
 	}

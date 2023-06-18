@@ -1,27 +1,19 @@
 package dados;
 
 public class Professor extends Pessoa{
-	private String cod_funcionario;
-	
-	public Professor (String nome, String cpf) {
-		super();
-		super.setNome(nome);
-		super.setCpf(cpf);
+	private int id;
+
+	public int getCod_funcionario() {
+		return id;
 	}
 
-	public String getCod_funcionario() {
-		return cod_funcionario;
-	}
-
-	public void setCod_funcionario(String cod_funcionario) {
-		this.cod_funcionario = cod_funcionario;
+	public void setCod_funcionario(int id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Professor [cod_funcionario=" + cod_funcionario + ", getCpf()=" + getCpf() + ", getNome()=" + getNome()
-				+ ", getEndereco()=" + getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+		return "Professor [id=" + id + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
+				+ getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular() + "]";
 	}
 }

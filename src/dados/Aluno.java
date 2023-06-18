@@ -1,26 +1,19 @@
 package dados;
 
 public class Aluno extends Pessoa{
-	private String matricula;
-	
-	public Aluno(String nome, String cpf) {
-		super();
-		super.setNome(nome);
-		super.setCpf(cpf);
+	private int id;
+
+	public int getId() {
+		return id;
 	}
 
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Aluno [matricula=" + matricula + ", getCpf()=" + getCpf() + ", getNome()=" + getNome()
-				+ ", getEndereco()=" + getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular()
-				+ "]";
-	}	
+		return "Aluno [id=" + id + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
+				+ getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular() + "]";
+	}
 }
