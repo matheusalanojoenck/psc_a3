@@ -8,6 +8,7 @@ public class Turma {
 	private Curso curso;
 	private Sala sala;
 	private List<Aluno> alunos;
+	private List<Aluno> listaDeEspera;
 	
 	public int getId() {
 		return id;
@@ -44,6 +45,12 @@ public class Turma {
 	}
 	public void setAlunos(List<Aluno> alunos) {
 		this.alunos = alunos;
+	}
+	public List<Aluno> getListaDeEspera() {
+		return listaDeEspera;
+	}
+	public void setlistaDeEspera(List<Aluno> listaDeEspera) {
+		this.listaDeEspera = listaDeEspera;
 	}
 	
 	@Override
