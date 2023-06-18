@@ -71,10 +71,6 @@ public class AlunosView {
 				String endereco = enderecoTextField.getText();
 				String email = emailTextField.getText();
 				String celular = celularTextField.getText();
-				Aluno aluno = new Aluno(nome, cpf);
-				aluno.setEndereco(endereco);
-				aluno.setEmail(email);
-				aluno.setCelular(celular);
 				
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.addRow(new Object [] {id, nome, cpf, endereco, email, celular});
@@ -84,8 +80,6 @@ public class AlunosView {
 				enderecoTextField.setText("");
 				emailTextField.setText("");
 				celularTextField.setText("");
-				
-				System.out.println(aluno.toString());
 				
 			}
 		});

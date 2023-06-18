@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import dados.Aluno;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class TurmasView {
@@ -70,11 +69,7 @@ public class TurmasView {
 				String endereco = enderecoTextField.getText();
 				String email = emailTextField.getText();
 				String celular = celularTextField.getText();
-				Aluno aluno = new Aluno(nome, cpf);
-				aluno.setEndereco(endereco);
-				aluno.setEmail(email);
-				aluno.setCelular(celular);
-				
+
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.addRow(new Object [] {id, nome, cpf, endereco, email, celular});
 				
@@ -83,8 +78,6 @@ public class TurmasView {
 				enderecoTextField.setText("");
 				emailTextField.setText("");
 				celularTextField.setText("");
-				
-				System.out.println(aluno.toString());
 				
 			}
 		});
