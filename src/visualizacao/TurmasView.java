@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -17,15 +16,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 public class TurmasView {
 
 	private JFrame frame;
-	private JTextField nomeTextField;
-	private JTextField cpfTextField;
-	private JTextField enderecoTextField;
-	private JTextField emailTextField;
-	private JTextField celularTextField;
 	private JTable table;
+	private JComboBox diaSemanaComboBox;
+	private JComboBox professorComboBox;
+	private JComboBox cursoComboBox;
+	private JComboBox salaComboBox;
 	private int id = 0;
 	/**
 	 * Launch the application.
@@ -64,20 +64,18 @@ public class TurmasView {
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nome = nomeTextField.getText();
-				String cpf = cpfTextField.getText();
-				String endereco = enderecoTextField.getText();
-				String email = emailTextField.getText();
-				String celular = celularTextField.getText();
-
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, nome, cpf, endereco, email, celular});
+				String diaSemana = diaSemanaComboBox.getSelectedItem().toString();
+				String professor = professorComboBox.getSelectedItem().toString();
+				String curso = cursoComboBox.getSelectedItem().toString();
+				String sala = salaComboBox.getSelectedItem().toString();
 				
-				nomeTextField.setText("");
-				cpfTextField.setText("");
-				enderecoTextField.setText("");
-				emailTextField.setText("");
-				celularTextField.setText("");
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+				model.addRow(new Object [] {id, diaSemana, professor, curso, sala});
+				
+				diaSemanaComboBox.setSelectedItem("");
+				professorComboBox.setSelectedItem("");
+				cursoComboBox.setSelectedItem("");
+				salaComboBox.setSelectedItem("");
 				
 			}
 		});
@@ -102,94 +100,74 @@ public class TurmasView {
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
-		gbl_panelTextFields.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelTextFields.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panelTextFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelTextFields.setLayout(gbl_panelTextFields);
 		
-		JLabel nomeLabel = new JLabel("Nome");
-		GridBagConstraints gbc_nomeLabel = new GridBagConstraints();
-		gbc_nomeLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_nomeLabel.gridx = 0;
-		gbc_nomeLabel.gridy = 0;
-		panelTextFields.add(nomeLabel, gbc_nomeLabel);
+		JLabel diaSemanaLabel = new JLabel("Dia");
+		GridBagConstraints gbc_diaSemanaLabel = new GridBagConstraints();
+		gbc_diaSemanaLabel.anchor = GridBagConstraints.EAST;
+		gbc_diaSemanaLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_diaSemanaLabel.gridx = 0;
+		gbc_diaSemanaLabel.gridy = 0;
+		panelTextFields.add(diaSemanaLabel, gbc_diaSemanaLabel);
 		
-		nomeTextField = new JTextField();
-		nomeTextField.setColumns(10);
-		GridBagConstraints gbc_nomeTextField = new GridBagConstraints();
-		gbc_nomeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nomeTextField.gridwidth = 2;
-		gbc_nomeTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_nomeTextField.gridx = 1;
-		gbc_nomeTextField.gridy = 0;
-		panelTextFields.add(nomeTextField, gbc_nomeTextField);
+		diaSemanaComboBox = new JComboBox();
+		diaSemanaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"}));
+		GridBagConstraints gbc_diaSemanaComboBox = new GridBagConstraints();
+		gbc_diaSemanaComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_diaSemanaComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diaSemanaComboBox.gridx = 1;
+		gbc_diaSemanaComboBox.gridy = 0;
+		panelTextFields.add(diaSemanaComboBox, gbc_diaSemanaComboBox);
 		
-		JLabel cpfLabel = new JLabel("CPF");
-		GridBagConstraints gbc_cpfLabel = new GridBagConstraints();
-		gbc_cpfLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_cpfLabel.gridx = 0;
-		gbc_cpfLabel.gridy = 1;
-		panelTextFields.add(cpfLabel, gbc_cpfLabel);
+		JLabel professorLabel = new JLabel("Professor");
+		GridBagConstraints gbc_professorLabel = new GridBagConstraints();
+		gbc_professorLabel.anchor = GridBagConstraints.EAST;
+		gbc_professorLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_professorLabel.gridx = 0;
+		gbc_professorLabel.gridy = 1;
+		panelTextFields.add(professorLabel, gbc_professorLabel);
 		
-		cpfTextField = new JTextField();
-		GridBagConstraints gbc_cpfTextField = new GridBagConstraints();
-		gbc_cpfTextField.gridwidth = 2;
-		gbc_cpfTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_cpfTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cpfTextField.gridx = 1;
-		gbc_cpfTextField.gridy = 1;
-		panelTextFields.add(cpfTextField, gbc_cpfTextField);
-		cpfTextField.setColumns(10);
+		professorComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "prof_1"}));
+		GridBagConstraints gbc_professorComboBox = new GridBagConstraints();
+		gbc_professorComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_professorComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_professorComboBox.gridx = 1;
+		gbc_professorComboBox.gridy = 1;
+		panelTextFields.add(professorComboBox, gbc_professorComboBox);
 		
-		JLabel enderecoLabel = new JLabel("Endereço");
-		GridBagConstraints gbc_enderecoLabel = new GridBagConstraints();
-		gbc_enderecoLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_enderecoLabel.gridx = 0;
-		gbc_enderecoLabel.gridy = 2;
-		panelTextFields.add(enderecoLabel, gbc_enderecoLabel);
+		JLabel cursoLabel = new JLabel("Curso");
+		GridBagConstraints gbc_cursoLabel = new GridBagConstraints();
+		gbc_cursoLabel.anchor = GridBagConstraints.EAST;
+		gbc_cursoLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_cursoLabel.gridx = 0;
+		gbc_cursoLabel.gridy = 2;
+		panelTextFields.add(cursoLabel, gbc_cursoLabel);
 		
-		enderecoTextField = new JTextField();
-		GridBagConstraints gbc_enderecoTextField = new GridBagConstraints();
-		gbc_enderecoTextField.gridwidth = 2;
-		gbc_enderecoTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_enderecoTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_enderecoTextField.gridx = 1;
-		gbc_enderecoTextField.gridy = 2;
-		panelTextFields.add(enderecoTextField, gbc_enderecoTextField);
-		enderecoTextField.setColumns(10);
+		cursoComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "curso_1"}));
+		GridBagConstraints gbc_cursoComboBox = new GridBagConstraints();
+		gbc_cursoComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_cursoComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cursoComboBox.gridx = 1;
+		gbc_cursoComboBox.gridy = 2;
+		panelTextFields.add(cursoComboBox, gbc_cursoComboBox);
 		
-		JLabel emailLabel = new JLabel("E-mail");
-		GridBagConstraints gbc_emailLabel = new GridBagConstraints();
-		gbc_emailLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_emailLabel.gridx = 0;
-		gbc_emailLabel.gridy = 3;
-		panelTextFields.add(emailLabel, gbc_emailLabel);
+		JLabel salaLabel = new JLabel("Sala");
+		GridBagConstraints gbc_salaLabel = new GridBagConstraints();
+		gbc_salaLabel.anchor = GridBagConstraints.EAST;
+		gbc_salaLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_salaLabel.gridx = 0;
+		gbc_salaLabel.gridy = 3;
+		panelTextFields.add(salaLabel, gbc_salaLabel);
 		
-		emailTextField = new JTextField();
-		GridBagConstraints gbc_emailTextField = new GridBagConstraints();
-		gbc_emailTextField.gridwidth = 2;
-		gbc_emailTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_emailTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_emailTextField.gridx = 1;
-		gbc_emailTextField.gridy = 3;
-		panelTextFields.add(emailTextField, gbc_emailTextField);
-		emailTextField.setColumns(10);
-		
-		JLabel celularLabel = new JLabel("Celular");
-		GridBagConstraints gbc_celularLabel = new GridBagConstraints();
-		gbc_celularLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_celularLabel.gridx = 0;
-		gbc_celularLabel.gridy = 4;
-		panelTextFields.add(celularLabel, gbc_celularLabel);
-		
-		celularTextField = new JTextField();
-		GridBagConstraints gbc_celularTextField = new GridBagConstraints();
-		gbc_celularTextField.gridwidth = 2;
-		gbc_celularTextField.insets = new Insets(0, 0, 0, 5);
-		gbc_celularTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_celularTextField.gridx = 1;
-		gbc_celularTextField.gridy = 4;
-		panelTextFields.add(celularTextField, gbc_celularTextField);
-		celularTextField.setColumns(10);
+		salaComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "A-101"}));
+		GridBagConstraints gbc_salaComboBox = new GridBagConstraints();
+		gbc_salaComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_salaComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_salaComboBox.gridx = 1;
+		gbc_salaComboBox.gridy = 3;
+		panelTextFields.add(salaComboBox, gbc_salaComboBox);
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
@@ -199,18 +177,23 @@ public class TurmasView {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				nomeTextField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-				cpfTextField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-				enderecoTextField.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-				emailTextField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-				celularTextField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+//				nomeTextField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+//				cpfTextField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+//				enderecoTextField.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+//				emailTextField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+//				celularTextField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+				
+				diaSemanaComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 1).toString());
+				professorComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 2).toString());
+				cursoComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3).toString());
+				salaComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4).toString());
 			}
 		});
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "CPF", "Endere\u00E7o", "E-mail", "Celular"
+				"ID", "Dia", "Professor", "Curso", "Sala"
 			}
 		));
 		scrollPaneTable.setViewportView(table);
