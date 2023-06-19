@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Turma {
 	private int id;
-	private DiasSemana dias_semana;
+	private DiasSemana diaSemana;
 	private Professor professor;
 	private Curso curso;
 	private Sala sala;
@@ -16,11 +16,11 @@ public class Turma {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public DiasSemana getDias_semana() {
-		return dias_semana;
+	public DiasSemana getDiaSemana() {
+		return diaSemana;
 	}
-	public void setDias_semana(DiasSemana dias_semana) {
-		this.dias_semana = dias_semana;
+	public void setgetDiaSemana(DiasSemana diaSemana) {
+		this.diaSemana = diaSemana;
 	}
 	public Professor getProfessor() {
 		return professor;
@@ -55,7 +55,7 @@ public class Turma {
 	
 	@Override
 	public String toString() {
-		return "Turma [id=" + id + ", dias_semana=" + dias_semana + ", professor=" + professor + ", curso=" + curso
+		return "Turma [id=" + id + ", dias_semana=" + diaSemana + ", professor=" + professor + ", curso=" + curso
 				+ ", sala=" + sala + "]";
 	}
 }
