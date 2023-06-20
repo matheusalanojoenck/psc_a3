@@ -1,6 +1,5 @@
 package visualizacao;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -28,27 +27,13 @@ public class AlunosView {
 	private JTextField celularTextField;
 	private JTable table;
 	private int id = 0;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AlunosView window = new AlunosView();
-					window.frmAlunos.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
 	public AlunosView() {
 		initialize();
+		frmAlunos.setVisible(true);
 	}
 
 	/**
@@ -59,6 +44,7 @@ public class AlunosView {
 		frmAlunos.setTitle("Alunos");
 		frmAlunos.setBounds(100, 100, 450, 300);
 		frmAlunos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		JPanel panelButtons = new JPanel();
 		frmAlunos.getContentPane().add(panelButtons, BorderLayout.SOUTH);
@@ -98,6 +84,15 @@ public class AlunosView {
 			}
 		});
 		panelButtons.add(deletarButton);
+		
+		JButton voltarButton = new JButton("Voltar");
+		voltarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Main();
+				frmAlunos.dispose();
+			}
+		});
+		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
 		frmAlunos.getContentPane().add(panelTextFields, BorderLayout.WEST);
@@ -217,5 +212,4 @@ public class AlunosView {
 		));
 		scrollPaneTable.setViewportView(table);
 	}
-
 }

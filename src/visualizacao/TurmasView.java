@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.BevelBorder;
 public class TurmasView {
 
 	private JFrame frame;
@@ -27,27 +28,13 @@ public class TurmasView {
 	private JComboBox cursoComboBox;
 	private JComboBox salaComboBox;
 	private int id = 0;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TurmasView window = new TurmasView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
 	public TurmasView() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -95,6 +82,15 @@ public class TurmasView {
 		});
 		panelButtons.add(deletarButton);
 		
+		JButton voltarButton = new JButton("Voltar");
+		voltarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Main();
+				frame.dispose();
+			}
+		});
+		panelButtons.add(voltarButton);
+		
 		JPanel panelTextFields = new JPanel();
 		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
@@ -115,6 +111,7 @@ public class TurmasView {
 		diaSemanaComboBox = new JComboBox();
 		diaSemanaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"}));
 		GridBagConstraints gbc_diaSemanaComboBox = new GridBagConstraints();
+		gbc_diaSemanaComboBox.gridwidth = 2;
 		gbc_diaSemanaComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_diaSemanaComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_diaSemanaComboBox.gridx = 1;
@@ -131,6 +128,7 @@ public class TurmasView {
 		
 		professorComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "prof_1"}));
 		GridBagConstraints gbc_professorComboBox = new GridBagConstraints();
+		gbc_professorComboBox.gridwidth = 2;
 		gbc_professorComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_professorComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_professorComboBox.gridx = 1;
@@ -147,6 +145,7 @@ public class TurmasView {
 		
 		cursoComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "curso_1"}));
 		GridBagConstraints gbc_cursoComboBox = new GridBagConstraints();
+		gbc_cursoComboBox.gridwidth = 2;
 		gbc_cursoComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_cursoComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cursoComboBox.gridx = 1;
@@ -163,6 +162,7 @@ public class TurmasView {
 		
 		salaComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "A-101"}));
 		GridBagConstraints gbc_salaComboBox = new GridBagConstraints();
+		gbc_salaComboBox.gridwidth = 2;
 		gbc_salaComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_salaComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_salaComboBox.gridx = 1;

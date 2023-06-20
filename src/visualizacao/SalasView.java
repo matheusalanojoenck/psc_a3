@@ -24,27 +24,13 @@ public class SalasView {
 	private JTextField capacidadeTextField;
 	private JTable table;
 	private int id = 0;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SalasView window = new SalasView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
 	public SalasView() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -87,6 +73,15 @@ public class SalasView {
 			}
 		});
 		panelButtons.add(deletarButton);
+		
+		JButton voltarButton = new JButton("Voltar");
+		voltarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Main();
+				frame.dispose();
+			}
+		});
+		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
 		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);

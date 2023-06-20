@@ -25,27 +25,13 @@ public class CursosView {
 	private JTextField descricaoTextField;
 	private JTable table;
 	private int id = 0;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CursosView window = new CursosView();
-					window.frmCursos.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
 	public CursosView() {
 		initialize();
+		frmCursos.setVisible(true);
 	}
 
 	/**
@@ -93,6 +79,15 @@ public class CursosView {
 			}
 		});
 		panelButtons.add(deletarButton);
+		
+		JButton voltarButton = new JButton("Voltar");
+		voltarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Main();
+				frmCursos.dispose();
+			}
+		});
+		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
 		frmCursos.getContentPane().add(panelTextFields, BorderLayout.WEST);
