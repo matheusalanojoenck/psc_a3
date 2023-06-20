@@ -2,6 +2,8 @@ package persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -9,6 +11,8 @@ import dados.*;
 
 public class DBConnection {
 	private Connection connection = null;
+	private Statement statement = null;
+	private ResultSet resultset = null;
 	private String banco = "programacao_terca";
 	private String porta = "3306";
 	private String IpHost = "//localhost";
@@ -51,13 +55,15 @@ public class DBConnection {
 	// Query Alunos
 	public List<Aluno> listarAlunos() {
 		//SELECT * FROM alunos 
-		String query = "SELECT * FROM alunos;"; 
+		String query = "SELECT * FROM alunos;";
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
 	public Aluno listarAluno(int id) {
 		// SELECT * FROM alunos WHERE id=?
 		String query = String.format("SELECT * FROM alunos WHERE id=%d;", id);
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
@@ -69,6 +75,7 @@ public class DBConnection {
 				aluno.getEndereco(),
 				aluno.getEmail(),
 				aluno.getCelular());
+		executeUpdate(query);
 	}
 	
 	public void editarAluno(int id, Aluno aluno) {
@@ -80,23 +87,27 @@ public class DBConnection {
 				aluno.getEmail(),
 				aluno.getCelular(),
 				id);
+		executeUpdate(query);
 	}
 	
 	public void deletarAluno(int id) {
 		//DELETE FROM alunos WHERE id=?
 		String query = String.format("DELETE FROM alunos WHERE id=%d;", id);
+		executeUpdate(query);
 	}
 	
 	//Query Professor
 	public List<Professor> listarProfessores() {
 		//SELECT * FROM professores
-		String query = "SELECT * FROM professores;"; 
+		String query = "SELECT * FROM professores;";
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
 	public Professor listarProfessor(int id) {
 		//SELECT * FROM professores WHERE id=?
 		String query = String.format("SELECT * FROM professores WHERE id=%d;", id);
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
@@ -108,6 +119,7 @@ public class DBConnection {
 				professor.getEndereco(),
 				professor.getEmail(),
 				professor.getCelular());
+		executeUpdate(query);
 		
 	}
 	
@@ -120,24 +132,28 @@ public class DBConnection {
 				professor.getEmail(),
 				professor.getCelular(),
 				id);
+		executeUpdate(query);
 		
 	}
 	
 	public void deletarProfessor(int id) {
 		//DELETE FROM professores WHERE id=?
 		String query = String.format("DELETE FROM professores WHERE id=%d;", id);
+		executeUpdate(query);
 	}
 	
 	//Query Curso
 	public List<Curso> listarCursos() {
 		//SELECT * FROM cursos
 		String query = "SELECT * FROM cursos;";
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
 	public Curso listarCurso(int id) {
 		//SELECT * FROM cursos WHERE id=?
 		String query = String.format("SELECT * FROM cursos WHERE id=%d;", id);
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
@@ -147,6 +163,7 @@ public class DBConnection {
 				curso.getNome(),
 				curso.getCarga_horaria(),
 				curso.getDescricao());
+		executeUpdate(query);
 	}
 	
 	public void editarCurso(int id, Curso curso) {
@@ -156,24 +173,27 @@ public class DBConnection {
 				curso.getCarga_horaria(),
 				curso.getDescricao(),
 				id);
-		
+		executeUpdate(query);
 	}
 	
 	public void deletarCurso(int id) {
 		//DELETE FROM cursos WHERE id=?;
 		String query = String.format("DELETE FROM cursos WHERE id=%d;", id);
+		executeUpdate(query);
 	}
 	
 	//Query Sala
 	public List<Sala> listarSalas() {
 		//SELECT * FROM cursos;
 		String query = "SELECT * FROM cursos;";
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
 	public Sala listarSala(int id) {
 		//SELECT * FROM cursos WHERE id=?;
 		String query = String.format("SELECT * FROM cursos WHERE id=%d;", id);
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
@@ -182,7 +202,7 @@ public class DBConnection {
 		String query = String.format("INSERT INTO salas (local, capacidade) VALUES (%s, %d);", 
 				sala.getLocal(),
 				sala.getCapacidade());
-		
+		executeUpdate(query);
 	}
 	
 	public void editarSala(int id, Sala sala) {
@@ -191,23 +211,27 @@ public class DBConnection {
 				sala.getLocal(),
 				sala.getCapacidade(),
 				id);
+		executeUpdate(query);
 	}
 	
 	public void deletarSala(int id) {
 		//DELETE FROM salas WHERE id=?
 		String query = String.format("DELETE FROM salas WHERE id=%d", id);
+		executeUpdate(query);
 	}
 	
 	//Query Turma
 	public List<Turma> listarTurmas() {
 		//SELECT * FROM turmas;
 		String query = "SELECT * FROM turmas;";
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
 	public Turma listarTurma(int id) {
 		//SELECT * FROM turmas WHERE id=?
 		String query = String.format("SELECT * FROM turmas WHERE id=%s", id);
+		ResultSet resultset = executeQuery(query);
 		return null;
 	}
 	
@@ -218,6 +242,7 @@ public class DBConnection {
 				turma.getProfessor(),
 				turma.getCurso(),
 				turma.getSala());
+		executeUpdate(query);
 	}
 	
 	public void editarTurma(int id, Turma turma) {
@@ -228,26 +253,59 @@ public class DBConnection {
 				turma.getCurso(),
 				turma.getSala(),
 				id);
+		executeUpdate(query);
 	}
 	
 	public void deletarTurma(int id) {
 		//DELETE FROM turmas WHERE id=?
 		String query = String.format("DELETE FROM turmas WHERE id=%s", id);
+		executeUpdate(query);
 	}
 	
 	//Query aluno_turma
+	public List<Aluno> listarAluno_turma(int id_turma){
+		//SELECT * FROM aluno_turma WHERE turmas_id=?
+		String query = String.format("SELECT * FROM aluno_turma WHERE turmas_id=%d;", 
+				id_turma);
+		ResultSet resultset = executeQuery(query);
+		return null;
+	}
 	public void inserirAluno_turma(int id_aluno, int id_turma) {
-		//INSERT INTO aluno_turma (alunos_id, turmas_id) VALUES (?, ?); 
+		//INSERT INTO aluno_turma (alunos_id, turmas_id) VALUES (?, ?);
+		String query = String.format("INSERT INTO aluno_turma (alunos_id, turmas_id) VALUES (%d, %d);", 
+				id_aluno,
+				id_turma);
+		executeUpdate(query);
 		
 	}
 	
 	public void deletarAluno_turma(int id_aluno, int id_turma) {
-		//DELETE FROM turmas WHERE aluno_id=? AND turmas_id=?
+		//DELETE FROM turmas WHERE aluno_id=? AND turmas_id=?;
+		String query = String.format("DELETE FROM turmas WHERE aluno_id=%d AND turmas_id=%d;", 
+				id_aluno,
+				id_turma);
+		executeUpdate(query);
 	}
 	
-	public List<Aluno> listarAluno_turma(int id_turma){
-		//SELECT * FROM `aluno_turma` WHERE turmas_id=?
-		return null;
+	private void executeUpdate(String query) {
+		try {
+			statement.executeUpdate(query);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 	}
+	private ResultSet executeQuery(String query) {
+		ResultSet resultset = null;
+		try {
+			resultset = statement.executeQuery(query);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+		return resultset;
+	}
+	
 	
 }
