@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import dados.DiasSemana;
 public class Main {
 
 	private JFrame frame;

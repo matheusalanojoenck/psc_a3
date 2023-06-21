@@ -19,6 +19,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.BevelBorder;
+import java.util.List;
+import java.util.ArrayList;
+import persistencia.DBConnection;
+import dados.*;
+
 public class TurmasView {
 
 	private JFrame frame;
@@ -27,7 +32,7 @@ public class TurmasView {
 	private JComboBox professorComboBox;
 	private JComboBox cursoComboBox;
 	private JComboBox salaComboBox;
-	private int id = 0;
+	private DBConnection db;
 
 	/**
 	 * Create the application.
@@ -35,6 +40,69 @@ public class TurmasView {
 	public TurmasView() {
 		initialize();
 		frame.setVisible(true);
+	}
+	
+	private void atualizaTable() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"ID", "Dia", "Professor", "Curso", "Sala"
+				}
+			));
+		
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		//model.addRow(new Object [] {id, diaSemana, professor, curso, sala});
+	}
+	
+	private String[] professores() {
+		List<Professor> profs = new ArrayList<Professor>();
+		db = new DBConnection();
+		db.conectarMariaDB();
+		profs = db.listarProfessores();
+		db.desconectar();
+		String[] profsReturn = new String[profs.size()+1];
+		
+		profsReturn[0] = "";
+		for (int i = 0; i < profs.size(); i++) {
+			profsReturn[i+1] = profs.get(i).toString();
+		}
+		
+		return profsReturn;
+	}
+	
+	private String[] cursos() {
+		
+		List<Curso> c = new ArrayList<Curso>();
+		db = new DBConnection();
+		db.conectarMariaDB();
+		c = db.listarCursos();
+		db.desconectar();
+		String[] cursosReturn = new String[c.size()+1];
+		
+		cursosReturn[0] = "";
+		for (int i = 0; i < c.size(); i++) {
+			cursosReturn[i+1] = c.get(i).toString();
+		}
+		
+		return cursosReturn;
+	}
+	
+	private String[] salas() {
+		
+		List<Sala> s = new ArrayList<Sala>();
+		db = new DBConnection();
+		db.conectarMariaDB();
+		s = db.listarSalas();
+		db.desconectar();
+		String[] salaReturn = new String[s.size()+1];
+		
+		salaReturn[0] = "";
+		for (int i = 0; i < s.size(); i++) {
+			salaReturn[i+1] = s.get(i).toString();
+		}
+		
+		return salaReturn;
 	}
 
 	/**
@@ -56,8 +124,25 @@ public class TurmasView {
 				String curso = cursoComboBox.getSelectedItem().toString();
 				String sala = salaComboBox.getSelectedItem().toString();
 				
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, diaSemana, professor, curso, sala});
+				int id_professor = Integer.parseInt(professor.split(" | ")[0]);
+				int id_curso = Integer.parseInt(curso.split(" | ")[0]);
+				int id_sala = Integer.parseInt(sala.split(" | ")[0]);
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				Professor p = db.listarProfessor(id_professor);
+				Curso c = db.listarCurso(id_curso);
+				Sala s = db.listarSala(id_sala);
+				
+				
+				Turma turma = new Turma();
+				turma.setgetDiaSemana(DiasSemana.valueOf(diaSemana));
+				turma.setProfessor(p);
+				turma.setCurso(c);
+				turma.setSala(s);
+				
+				db.inserirTurma(turma);
+				db.desconectar();
 				
 				diaSemanaComboBox.setSelectedItem("");
 				professorComboBox.setSelectedItem("");
@@ -71,6 +156,7 @@ public class TurmasView {
 		JButton editarButton = new JButton("Editar");
 		editarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		panelButtons.add(editarButton);
@@ -108,8 +194,8 @@ public class TurmasView {
 		gbc_diaSemanaLabel.gridy = 0;
 		panelTextFields.add(diaSemanaLabel, gbc_diaSemanaLabel);
 		
-		diaSemanaComboBox = new JComboBox();
-		diaSemanaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"}));
+		diaSemanaComboBox = new JComboBox<>();
+		diaSemanaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA"}));
 		GridBagConstraints gbc_diaSemanaComboBox = new GridBagConstraints();
 		gbc_diaSemanaComboBox.gridwidth = 2;
 		gbc_diaSemanaComboBox.insets = new Insets(0, 0, 5, 5);
@@ -126,7 +212,7 @@ public class TurmasView {
 		gbc_professorLabel.gridy = 1;
 		panelTextFields.add(professorLabel, gbc_professorLabel);
 		
-		professorComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "prof_1"}));
+		professorComboBox = new JComboBox(new DefaultComboBoxModel(professores()));
 		GridBagConstraints gbc_professorComboBox = new GridBagConstraints();
 		gbc_professorComboBox.gridwidth = 2;
 		gbc_professorComboBox.insets = new Insets(0, 0, 5, 5);
@@ -143,7 +229,7 @@ public class TurmasView {
 		gbc_cursoLabel.gridy = 2;
 		panelTextFields.add(cursoLabel, gbc_cursoLabel);
 		
-		cursoComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "curso_1"}));
+		cursoComboBox = new JComboBox(new DefaultComboBoxModel(cursos()));
 		GridBagConstraints gbc_cursoComboBox = new GridBagConstraints();
 		gbc_cursoComboBox.gridwidth = 2;
 		gbc_cursoComboBox.insets = new Insets(0, 0, 5, 5);
@@ -160,7 +246,7 @@ public class TurmasView {
 		gbc_salaLabel.gridy = 3;
 		panelTextFields.add(salaLabel, gbc_salaLabel);
 		
-		salaComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "A-101"}));
+		salaComboBox = new JComboBox(new DefaultComboBoxModel(salas()));
 		GridBagConstraints gbc_salaComboBox = new GridBagConstraints();
 		gbc_salaComboBox.gridwidth = 2;
 		gbc_salaComboBox.insets = new Insets(0, 0, 5, 5);
@@ -189,13 +275,7 @@ public class TurmasView {
 				salaComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4).toString());
 			}
 		});
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Dia", "Professor", "Curso", "Sala"
-			}
-		));
+		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 

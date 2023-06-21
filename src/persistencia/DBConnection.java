@@ -13,7 +13,6 @@ import dados.*;
 public class DBConnection {
 	private Connection connection = null;
 	private Statement statement = null;
-	private ResultSet resultset = null;
 	private String banco = "projeto_a3";
 	private String porta = "3306";
 	private String IpHost = "//localhost";
@@ -83,7 +82,21 @@ public class DBConnection {
 		// SELECT * FROM alunos WHERE id=?
 		String query = String.format("SELECT * FROM alunos WHERE id='%d;'", id);
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Aluno aluno = new Aluno();
+		try {
+			resultset.next();
+			aluno.setId(resultset.getInt("id"));
+			aluno.setNome(resultset.getString("nome"));
+			aluno.setCpf(resultset.getString("cpf"));
+			aluno.setEndereco(resultset.getString("endereco"));
+			aluno.setEmail(resultset.getString("email"));
+			aluno.setCelular(resultset.getString("celular"));		
+			
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarAlunos(int id) |" + e.getMessage());
+		}
+		
+		return aluno;
 	}
 	
 	public void inserirAluno(Aluno aluno) {
@@ -144,7 +157,21 @@ public class DBConnection {
 		//SELECT * FROM professores WHERE id=?
 		String query = String.format("SELECT * FROM professores WHERE id='%d';", id);
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Professor professor = new Professor();
+		try {
+			resultset.next();
+			professor.setId(resultset.getInt("id"));
+			professor.setNome(resultset.getString("nome"));
+			professor.setCpf(resultset.getString("cpf"));
+			professor.setEndereco(resultset.getString("endereco"));
+			professor.setEmail(resultset.getString("email"));
+			professor.setCelular(resultset.getString("celular"));
+				
+
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarProfessores(int id) |" + e.getMessage());
+		}
+		return professor;
 	}
 	
 	public void inserirProfessor(Professor professor) {
@@ -204,7 +231,19 @@ public class DBConnection {
 		//SELECT * FROM cursos WHERE id=?
 		String query = String.format("SELECT * FROM cursos WHERE id='%d';", id);
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Curso curso = new Curso();
+
+		try {
+				resultset.next();
+				curso.setId(resultset.getInt("id"));
+				curso.setNome(resultset.getString("nome"));
+				curso.setCarga_horaria(resultset.getFloat("carga_horaria"));
+				curso.setDescricao(resultset.getString("descricao"));
+
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarCursos(int id) |" + e.getMessage());
+		}
+		return curso;
 	}
 	
 	public void inserirCurso(Curso curso) {
@@ -257,7 +296,19 @@ public class DBConnection {
 		//SELECT * FROM cursos WHERE id=?;
 		String query = String.format("SELECT * FROM salas WHERE id='%d';", id);
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Sala sala = new Sala();
+
+		try {
+				resultset.next(); 
+				sala = new Sala();
+				sala.setId(resultset.getInt("id"));
+				sala.setLocal(resultset.getString("local"));
+				sala.setCapacidade(resultset.getInt("capacidade"));
+
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarSala |" + e.getMessage());
+		}
+		return sala;
 	}
 	
 	public void inserirSala(Sala sala) {
