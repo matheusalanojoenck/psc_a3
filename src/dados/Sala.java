@@ -26,6 +26,6 @@ public class Sala {
 	
 	@Override
 	public String toString() {
-		return "Sala [id=" + id + ", local=" + local + ", capacidade=" + capacidade + "]";
+		return String.format("%d | %s", getId(), getLocal());
 	}
 }

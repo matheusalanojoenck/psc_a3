@@ -32,7 +32,6 @@ public class Curso {
 	
 	@Override
 	public String toString() {
-		return "Curso [id=" + id + ", nome=" + nome + ", carga_horaria=" + carga_horaria + ", descricao=" + descricao
-				+ "]";
+		return String.format("%d | %s", getId(), getNome());
 	}
 }

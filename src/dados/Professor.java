@@ -13,7 +13,6 @@ public class Professor extends Pessoa{
 
 	@Override
 	public String toString() {
-		return "Professor [id=" + getId() + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
-				+ getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular() + "]";
+		return String.format("%d | %s", getId(), getNome()); 
 	}
 }
