@@ -11,6 +11,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import persistencia.DBConnection;
+
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -24,7 +27,7 @@ public class AlunoTurmaView {
 	private JTable table;
 	private JComboBox turmaComboBox;
 	private JComboBox alunoComboBox;
-	private int id = 0;
+	private DBConnection db;
 
 	/**
 	 * Create the application.
@@ -32,6 +35,18 @@ public class AlunoTurmaView {
 	public AlunoTurmaView() {
 		initialize();
 		frame.setVisible(true);
+	}
+	
+	private void atualizaTable() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Turma", "Aluno"
+				}
+			));
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		//model.addRow(new Object [] {0, turma, aluno});
 	}
 
 	/**
@@ -52,8 +67,7 @@ public class AlunoTurmaView {
 				String aluno = alunoComboBox.getSelectedItem().toString();
 
 				
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, turma, aluno});
+				
 				
 				turmaComboBox.setSelectedItem("");
 				alunoComboBox.setSelectedItem("");
@@ -104,8 +118,14 @@ public class AlunoTurmaView {
 		panelTextFields.add(turmaLabel, gbc_turmaLabel);
 		
 		turmaComboBox = new JComboBox();
+		turmaComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(turmaComboBox.getSelectedItem().toString());
+			}
+		});
 		turmaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"}));
 		GridBagConstraints gbc_turmaComboBox = new GridBagConstraints();
+		gbc_turmaComboBox.gridwidth = 2;
 		gbc_turmaComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_turmaComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_turmaComboBox.gridx = 1;
@@ -122,6 +142,7 @@ public class AlunoTurmaView {
 		
 		alunoComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "prof_1"}));
 		GridBagConstraints gbc_alunoComboBox = new GridBagConstraints();
+		gbc_alunoComboBox.gridwidth = 2;
 		gbc_alunoComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_alunoComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_alunoComboBox.gridx = 1;
@@ -147,13 +168,7 @@ public class AlunoTurmaView {
 
 			}
 		});
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Nome Aluno"
-			}
-		));
+		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 
