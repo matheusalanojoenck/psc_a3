@@ -3,17 +3,17 @@ package dados;
 public class Professor extends Pessoa{
 	private int id;
 
-	public int getCod_funcionario() {
+	public int getId() {
 		return id;
 	}
 
-	public void setCod_funcionario(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Professor [id=" + id + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
+		return "Professor [id=" + getId() + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
 				+ getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular() + "]";
 	}
 }
