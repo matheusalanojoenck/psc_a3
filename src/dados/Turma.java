@@ -19,7 +19,7 @@ public class Turma {
 	public DiasSemana getDiaSemana() {
 		return diaSemana;
 	}
-	public void setgetDiaSemana(DiasSemana diaSemana) {
+	public void setDiaSemana(DiasSemana diaSemana) {
 		this.diaSemana = diaSemana;
 	}
 	public Professor getProfessor() {
