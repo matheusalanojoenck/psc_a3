@@ -12,11 +12,16 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import persistencia.DBConnection;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import dados.Curso;
+
 public class CursosView {
 
 	private JFrame frmCursos;
@@ -24,7 +29,7 @@ public class CursosView {
 	private JTextField cargaHorariaTextField;
 	private JTextField descricaoTextField;
 	private JTable table;
-	private int id = 0;
+	private DBConnection db;
 
 	/**
 	 * Create the application.
@@ -32,6 +37,34 @@ public class CursosView {
 	public CursosView() {
 		initialize();
 		frmCursos.setVisible(true);
+	}
+	
+	private void atualizaTable() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ID", "Nome", "Carga Hor\u00E1ria", "Descri\u00E7\u00E3o"
+				}
+			));
+		List<Curso> cursos = new ArrayList<Curso>();
+		
+		db = new DBConnection();
+		db.conectarMariaDB();
+		cursos = db.listarCursos();
+		db.desconectar();
+		
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		
+		for (Curso curso : cursos) {
+			
+			model.addRow(new Object [] {
+					curso.getId(), 
+					curso.getNome(), 
+					curso.getCarga_horaria(),
+					curso.getDescricao()});
+		}
+		
 	}
 
 	/**
@@ -50,18 +83,24 @@ public class CursosView {
 		adicionarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nome = nomeTextField.getText();
-				String cpf = cargaHorariaTextField.getText();
-				String endereco = descricaoTextField.getText();
-
-
+				String cargaHoraria = cargaHorariaTextField.getText();
+				String descricao = descricaoTextField.getText();
 				
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, nome, cpf, endereco});
+				Curso curso = new Curso();
+				curso.setNome(nome);
+				curso.setCarga_horaria(Float.parseFloat(cargaHoraria));
+				curso.setDescricao(descricao);
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.inserirCurso(curso);
+				db.desconectar();
 				
 				nomeTextField.setText("");
 				cargaHorariaTextField.setText("");
 				descricaoTextField.setText("");
-
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(adicionarButton);
@@ -69,6 +108,27 @@ public class CursosView {
 		JButton editarButton = new JButton("Editar");
 		editarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				String nome = nomeTextField.getText();
+				String cargaHoraria = cargaHorariaTextField.getText();
+				String descricao = descricaoTextField.getText();
+				
+				Curso curso = new Curso();
+				curso.setNome(nome);
+				curso.setCarga_horaria(Float.parseFloat(cargaHoraria));
+				curso.setDescricao(descricao);
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.editarCurso(id, curso);
+				db.desconectar();
+				
+				nomeTextField.setText("");
+				cargaHorariaTextField.setText("");
+				descricaoTextField.setText("");
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(editarButton);
@@ -76,6 +136,14 @@ public class CursosView {
 		JButton deletarButton = new JButton("Deletar");
 		deletarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.deletarCurso(id);
+				db.desconectar();
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(deletarButton);
@@ -163,13 +231,7 @@ public class CursosView {
 
 			}
 		});
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Nome", "Carga Hor\u00E1ria", "Descri\u00E7\u00E3o"
-			}
-		));
+		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 

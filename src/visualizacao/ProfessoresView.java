@@ -17,6 +17,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import dados.Professor;
+import persistencia.DBConnection;
+
 public class ProfessoresView {
 
 	private JFrame frmProfessores;
@@ -26,7 +31,7 @@ public class ProfessoresView {
 	private JTextField emailTextField;
 	private JTextField celularTextField;
 	private JTable table;
-	private int id = 0;
+	private DBConnection db;
 
 	/**
 	 * Create the application.
@@ -34,6 +39,35 @@ public class ProfessoresView {
 	public ProfessoresView() {
 		initialize();
 		frmProfessores.setVisible(true);
+	}
+	
+	private void atualizaTable() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"ID", "Nome", "CPF", "Endere\u00E7o", "E-mail", "Celular"
+				}
+			));
+		List<Professor> professores = new ArrayList<Professor>();
+		
+		db = new DBConnection();
+		db.conectarMariaDB();
+		professores = db.listarProfessores();
+		db.desconectar();
+		
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		
+		for (Professor professor : professores) {
+			model.addRow(new Object [] {
+					professor.getId(), 
+					professor.getNome(), 
+					professor.getCpf(), 
+					professor.getEndereco(), 
+					professor.getEmail(), 
+					professor.getCelular()});
+		}
+		
 	}
 
 	/**
@@ -57,15 +91,25 @@ public class ProfessoresView {
 				String email = emailTextField.getText();
 				String celular = celularTextField.getText();
 				
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, nome, cpf, endereco, email, celular});
+				Professor professor = new Professor();
+				professor.setNome(nome);
+				professor.setCpf(cpf);
+				professor.setEndereco(endereco);
+				professor.setEmail(email);
+				professor.setCelular(celular);
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.inserirProfessor(professor);
+				db.desconectar();
 				
 				nomeTextField.setText("");
 				cpfTextField.setText("");
 				enderecoTextField.setText("");
 				emailTextField.setText("");
 				celularTextField.setText("");
-					
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(adicionarButton);
@@ -73,6 +117,33 @@ public class ProfessoresView {
 		JButton editarButton = new JButton("Editar");
 		editarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				String nome = nomeTextField.getText();
+				String cpf = cpfTextField.getText();
+				String endereco = enderecoTextField.getText();
+				String email = emailTextField.getText();
+				String celular = celularTextField.getText();
+				
+				Professor professor = new Professor();
+				professor.setNome(nome);
+				professor.setCpf(cpf);
+				professor.setEndereco(endereco);
+				professor.setEmail(email);
+				professor.setCelular(celular);
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.editarProfessor(id, professor);
+				db.desconectar();
+				
+				nomeTextField.setText("");
+				cpfTextField.setText("");
+				enderecoTextField.setText("");
+				emailTextField.setText("");
+				celularTextField.setText("");
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(editarButton);
@@ -80,6 +151,14 @@ public class ProfessoresView {
 		JButton deletarButton = new JButton("Deletar");
 		deletarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.deletarProfessor(id);
+				db.desconectar();
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(deletarButton);
@@ -202,13 +281,7 @@ public class ProfessoresView {
 				celularTextField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
 			}
 		});
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Nome", "CPF", "Endere\u00E7o", "E-mail", "Celular"
-			}
-		));
+		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 

@@ -17,13 +17,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import persistencia.DBConnection;
+import java.util.List;
+import java.util.ArrayList;
+import dados.Sala;
+
 public class SalasView {
 
 	private JFrame frame;
 	private JTextField localTextField;
 	private JTextField capacidadeTextField;
 	private JTable table;
-	private int id = 0;
+	private DBConnection db;
 
 	/**
 	 * Create the application.
@@ -31,6 +36,31 @@ public class SalasView {
 	public SalasView() {
 		initialize();
 		frame.setVisible(true);
+	}
+	
+	private void atualizaTable() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"ID", "Local", "Capacidade"
+				}
+			));
+		List<Sala> salas = new ArrayList<Sala>();
+		
+		db = new DBConnection();
+		db.conectarMariaDB();
+		salas = db.listarSalas();
+		db.desconectar();
+		
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		
+		for (Sala sala : salas) {
+			model.addRow(new Object [] {
+					sala.getId(), 
+					sala.getLocal(), 
+					sala.getCapacidade()});
+		}
 	}
 
 	/**
@@ -49,13 +79,20 @@ public class SalasView {
 			public void actionPerformed(ActionEvent e) {
 				String local = localTextField.getText();
 				String capacidade = capacidadeTextField.getText();
-			
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new Object [] {id, local, capacidade});
 				
+				Sala sala = new Sala();
+				sala.setLocal(local);
+				sala.setCapacidade(Integer.parseInt(capacidade));
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.inserirSala(sala);
+				db.desconectar();
+			
 				localTextField.setText("");
 				capacidadeTextField.setText("");
-					
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(adicionarButton);
@@ -63,6 +100,24 @@ public class SalasView {
 		JButton editarButton = new JButton("Editar");
 		editarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				String local = localTextField.getText();
+				String capacidade = capacidadeTextField.getText();
+				
+				Sala sala = new Sala();
+				sala.setLocal(local);
+				sala.setCapacidade(Integer.parseInt(capacidade));
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.editarSala(id, sala);
+				db.desconectar();
+			
+				localTextField.setText("");
+				capacidadeTextField.setText("");
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(editarButton);
@@ -70,6 +125,14 @@ public class SalasView {
 		JButton deletarButton = new JButton("Deletar");
 		deletarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.deletarSala(id);
+				db.desconectar();
+				
+				atualizaTable();
 			}
 		});
 		panelButtons.add(deletarButton);
@@ -139,13 +202,7 @@ public class SalasView {
 				
 			}
 		});
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ID", "Local", "Capacidade"
-			}
-		));
+		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 
