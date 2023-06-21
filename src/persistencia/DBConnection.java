@@ -339,7 +339,23 @@ public class DBConnection {
 		//SELECT * FROM turmas;
 		String query = "SELECT * FROM turmas;";
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Turma turma;
+		List<Turma> turmas = new ArrayList<Turma>();
+		try {
+			while (resultset.next()) {
+				
+				turma = new Turma();
+				turma.setId(resultset.getInt("id"));
+				turma.setDiaSemana(DiasSemana.valueOf(resultset.getString("diaSemana")));
+				turma.setProfessor(listarProfessor(resultset.getInt("professor")));
+				turma.setCurso(listarCurso(resultset.getInt("curso")));
+				turma.setSala(listarSala(resultset.getInt("sala")));
+				turmas.add(turma);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarTurmas |" + e.getMessage());
+		}
+		return turmas;
 	}
 	
 	public Turma listarTurma(int id) {
@@ -352,16 +368,16 @@ public class DBConnection {
 	public void inserirTurma(Turma turma) {
 		//INSERT INTO turmas (diaSemana, professor, curso, sala) VALUES (?, ?, ?, ?);
 		String query = String.format("INSERT INTO turmas (diaSemana, professor, curso, sala) VALUES ('%s', '%s', '%s', '%s');", 
-				turma.getDiaSemana(),
-				turma.getProfessor(),
-				turma.getCurso(),
-				turma.getSala());
+				turma.getDiaSemana().toString(),
+				turma.getProfessor().getId(),
+				turma.getCurso().getId(),
+				turma.getSala().getId());
 		executeUpdate(query);
 	}
 	
 	public void editarTurma(int id, Turma turma) {
 		//UPDATE turmas SET diaSemana=?, professor=?, curso=?, salas=? WHERE id=?;
-		String query = String.format("UPDATE turmas SET diaSemana='%s', professor='%s', curso='%s', salas='%s' WHERE id='%d';", 
+		String query = String.format("UPDATE turmas SET diaSemana='%s', professor='%s', curso='%s', sala='%s' WHERE id='%d';", 
 				turma.getDiaSemana(),
 				turma.getProfessor(),
 				turma.getCurso(),
