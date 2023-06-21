@@ -1,11 +1,9 @@
 package dados;
 
 public enum DiasSemana {
-	SEGUNDA_FEIRA,
-	TERCA_FEIRA,
-	QUARTA_FEIRA,
-	QUINTA_FEIRA,
-	SEXTA_FEIRA,
-	SABADO,
-	DOMINGO
+	SEGUNDA,
+	TERÇA,
+	QUARTA,
+	QUINTA,
+	SEXTA
 }
