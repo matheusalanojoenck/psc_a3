@@ -13,7 +13,6 @@ public class Aluno extends Pessoa{
 
 	@Override
 	public String toString() {
-		return "Aluno [id=" + id + ", getCpf()=" + getCpf() + ", getNome()=" + getNome() + ", getEndereco()="
-				+ getEndereco() + ", getEmail()=" + getEmail() + ", getCelular()=" + getCelular() + "]";
+		return getId() + " | " + super.getNome(); 
 	}
 }

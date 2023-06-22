@@ -24,7 +24,7 @@ import dados.*;
 
 public class TurmasView {
 
-	private JFrame frame;
+	private JFrame frmTurmas;
 	private JTable table;
 	private JComboBox diaSemanaComboBox;
 	private JComboBox professorComboBox;
@@ -37,7 +37,7 @@ public class TurmasView {
 	 */
 	public TurmasView() {
 		initialize();
-		frame.setVisible(true);
+		frmTurmas.setVisible(true);
 	}
 	
 	private void atualizaTable() {
@@ -122,12 +122,13 @@ public class TurmasView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTurmas = new JFrame();
+		frmTurmas.setTitle("Turmas");
+		frmTurmas.setBounds(100, 100, 450, 300);
+		frmTurmas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelButtons = new JPanel();
-		frame.getContentPane().add(panelButtons, BorderLayout.SOUTH);
+		frmTurmas.getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
@@ -225,13 +226,13 @@ public class TurmasView {
 		voltarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Main();
-				frame.dispose();
+				frmTurmas.dispose();
 			}
 		});
 		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
-		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
+		frmTurmas.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
@@ -310,7 +311,7 @@ public class TurmasView {
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
-		frame.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
+		frmTurmas.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {

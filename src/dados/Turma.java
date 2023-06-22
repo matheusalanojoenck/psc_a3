@@ -55,7 +55,6 @@ public class Turma {
 	
 	@Override
 	public String toString() {
-		return "Turma [id=" + id + ", dias_semana=" + diaSemana + ", professor=" + professor + ", curso=" + curso
-				+ ", sala=" + sala + "]";
+		return getId() + " | " + getProfessor().getNome() + " | " + getCurso().getNome(); 
 	}
 }

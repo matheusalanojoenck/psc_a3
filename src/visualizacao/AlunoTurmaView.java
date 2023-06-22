@@ -11,9 +11,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import persistencia.DBConnection;
-
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,9 +18,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.util.List;
+import java.util.ArrayList;
+import persistencia.DBConnection;
+import dados.*;
+
 public class AlunoTurmaView {
 
-	private JFrame frame;
+	private JFrame frmAlunosturma;
 	private JTable table;
 	private JComboBox turmaComboBox;
 	private JComboBox alunoComboBox;
@@ -34,31 +36,77 @@ public class AlunoTurmaView {
 	 */
 	public AlunoTurmaView() {
 		initialize();
-		frame.setVisible(true);
+		frmAlunosturma.setVisible(true);
 	}
 	
-	private void atualizaTable() {
+	private void atualizaTable(int id_turma) {
 		table.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
 				new String[] {
-					"Turma", "Aluno"
+					"ID", "Nome Aluno"
 				}
 			));
+		
+		List<Aluno> alunos = new ArrayList<Aluno>();
+		
+		db = new DBConnection();
+		db.conectarMariaDB();
+		alunos = db.listarAluno_turma(id_turma);
+		db.desconectar();
+		
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		//model.addRow(new Object [] {0, turma, aluno});
+		
+		for (Aluno aluno : alunos) {
+			model.addRow(new Object [] {
+					aluno.getId(),
+					aluno.getNome()
+			});
+		}
+	}
+	
+	private String[] turmas() {
+		List<Turma> t = new ArrayList<Turma>();
+		db = new DBConnection();
+		db.conectarMariaDB();
+		t = db.listarTurmas();
+		db.desconectar();
+		String[] turmasReturn = new String[t.size()+1];
+		
+		for (int i = 0; i < t.size(); i++) {
+			turmasReturn[i+1] = t.get(i).toString();
+		}
+		
+		return turmasReturn;
+	}
+	
+	private String[] alunos() {
+		List<Aluno> a = new ArrayList<Aluno>();
+		db = new DBConnection();
+		db.conectarMariaDB();
+		a = db.listarAlunos();
+		db.desconectar();
+		String[] alunosReturn = new String[a.size()+1];
+		
+		alunosReturn[0] = "";
+		for (int i = 0; i < a.size(); i++) {
+			alunosReturn[i+1] = a.get(i).toString();
+		}
+		
+		return alunosReturn;
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAlunosturma = new JFrame();
+		frmAlunosturma.setTitle("Alunos/Turma");
+		frmAlunosturma.setBounds(100, 100, 450, 300);
+		frmAlunosturma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelButtons = new JPanel();
-		frame.getContentPane().add(panelButtons, BorderLayout.SOUTH);
+		frmAlunosturma.getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
@@ -66,27 +114,33 @@ public class AlunoTurmaView {
 				String turma = turmaComboBox.getSelectedItem().toString();
 				String aluno = alunoComboBox.getSelectedItem().toString();
 
+				int id_turma = Integer.parseInt(turma.split(" | ")[0]);
+				int id_aluno = Integer.parseInt(aluno.split(" | ")[0]);
 				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.inserirAluno_turma(id_aluno, id_turma);
+				db.desconectar();
 				
-				
-				turmaComboBox.setSelectedItem("");
-				alunoComboBox.setSelectedItem("");
-
-				
+				atualizaTable(id_turma);
 			}
 		});
 		panelButtons.add(adicionarButton);
 		
-		JButton editarButton = new JButton("Editar");
-		editarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panelButtons.add(editarButton);
-		
 		JButton deletarButton = new JButton("Deletar");
 		deletarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String turma = turmaComboBox.getSelectedItem().toString();
+				
+				int id_turma = Integer.parseInt(turma.split(" | ")[0]);
+				int id_aluno = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				
+				db = new DBConnection();
+				db.conectarMariaDB();
+				db.deletarAluno_turma(id_aluno, id_turma);
+				db.desconectar();
+				
+				atualizaTable(id_turma);
 			}
 		});
 		panelButtons.add(deletarButton);
@@ -95,13 +149,13 @@ public class AlunoTurmaView {
 		voltarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Main();
-				frame.dispose();
+				frmAlunosturma.dispose();
 			}
 		});
 		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
-		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
+		frmAlunosturma.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
@@ -120,10 +174,11 @@ public class AlunoTurmaView {
 		turmaComboBox = new JComboBox();
 		turmaComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(turmaComboBox.getSelectedItem().toString());
+				int id_turma = Integer.parseInt(turmaComboBox.getSelectedItem().toString().split(" | ")[0]);
+				atualizaTable(id_turma);
 			}
 		});
-		turmaComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Segunda", "Terça", "Quarta", "Quinta", "Sexta"}));
+		turmaComboBox.setModel(new DefaultComboBoxModel(turmas()));
 		GridBagConstraints gbc_turmaComboBox = new GridBagConstraints();
 		gbc_turmaComboBox.gridwidth = 2;
 		gbc_turmaComboBox.insets = new Insets(0, 0, 5, 5);
@@ -140,7 +195,7 @@ public class AlunoTurmaView {
 		gbc_alunoLabel.gridy = 1;
 		panelTextFields.add(alunoLabel, gbc_alunoLabel);
 		
-		alunoComboBox = new JComboBox(new DefaultComboBoxModel(new String[] {"", "prof_1"}));
+		alunoComboBox = new JComboBox(new DefaultComboBoxModel(alunos()));
 		GridBagConstraints gbc_alunoComboBox = new GridBagConstraints();
 		gbc_alunoComboBox.gridwidth = 2;
 		gbc_alunoComboBox.insets = new Insets(0, 0, 5, 5);
@@ -151,24 +206,18 @@ public class AlunoTurmaView {
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
-		frame.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
+		frmAlunosturma.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				nomeTextField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-//				cpfTextField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-//				enderecoTextField.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-//				emailTextField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-//				celularTextField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
 				
-				turmaComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 1).toString());
-				alunoComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 2).toString());
+//				turmaComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 1).toString());
+//				alunoComboBox.setSelectedItem(table.getValueAt(table.getSelectedRow(), 2).toString());
 
 			}
 		});
-		atualizaTable();
 		scrollPaneTable.setViewportView(table);
 	}
 

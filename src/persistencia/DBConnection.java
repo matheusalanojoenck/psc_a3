@@ -395,10 +395,22 @@ public class DBConnection {
 	//Query aluno_turma
 	public List<Aluno> listarAluno_turma(int id_turma){
 		//SELECT * FROM aluno_turma WHERE turmas_id=?
-		String query = String.format("SELECT * FROM aluno_turma WHERE turmas_id='%d';", 
-				id_turma);
+		String query = String.format("SELECT * FROM aluno_turma WHERE turmas_id='%d';", id_turma);
 		ResultSet resultset = executeQuery(query);
-		return null;
+		Aluno aluno;
+		List<Aluno> alunos = new ArrayList<Aluno>();
+		try {
+			while (resultset.next()) {
+				aluno = new Aluno();
+				aluno = listarAluno(resultset.getInt("alunos_id"));
+
+				alunos.add(aluno);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao listarAluno_turma(int id_turma) |" + e.getMessage());
+		}
+		
+		return alunos;
 	}
 	
 	public void inserirAluno_turma(int id_aluno, int id_turma) {
@@ -412,7 +424,7 @@ public class DBConnection {
 	
 	public void deletarAluno_turma(int id_aluno, int id_turma) {
 		//DELETE FROM turmas WHERE aluno_id=? AND turmas_id=?;
-		String query = String.format("DELETE FROM turmas WHERE aluno_id='%d' AND turmas_id='%d';", 
+		String query = String.format("DELETE FROM aluno_turma WHERE alunos_id='%d' AND turmas_id='%d';", 
 				id_aluno,
 				id_turma);
 		executeUpdate(query);

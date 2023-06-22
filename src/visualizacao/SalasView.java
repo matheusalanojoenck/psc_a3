@@ -24,7 +24,7 @@ import dados.Sala;
 
 public class SalasView {
 
-	private JFrame frame;
+	private JFrame frmSalas;
 	private JTextField localTextField;
 	private JTextField capacidadeTextField;
 	private JTable table;
@@ -35,7 +35,7 @@ public class SalasView {
 	 */
 	public SalasView() {
 		initialize();
-		frame.setVisible(true);
+		frmSalas.setVisible(true);
 	}
 	
 	private void atualizaTable() {
@@ -67,12 +67,13 @@ public class SalasView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSalas = new JFrame();
+		frmSalas.setTitle("Salas");
+		frmSalas.setBounds(100, 100, 450, 300);
+		frmSalas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelButtons = new JPanel();
-		frame.getContentPane().add(panelButtons, BorderLayout.SOUTH);
+		frmSalas.getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		
 		JButton adicionarButton = new JButton("Adicionar");
 		adicionarButton.addActionListener(new ActionListener() {
@@ -141,13 +142,13 @@ public class SalasView {
 		voltarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Main();
-				frame.dispose();
+				frmSalas.dispose();
 			}
 		});
 		panelButtons.add(voltarButton);
 		
 		JPanel panelTextFields = new JPanel();
-		frame.getContentPane().add(panelTextFields, BorderLayout.WEST);
+		frmSalas.getContentPane().add(panelTextFields, BorderLayout.WEST);
 		GridBagLayout gbl_panelTextFields = new GridBagLayout();
 		gbl_panelTextFields.columnWidths = new int[]{46, 86, 46, 0};
 		gbl_panelTextFields.rowHeights = new int[]{20, 0, 0, 0, 0, 0};
@@ -191,7 +192,7 @@ public class SalasView {
 		
 		JScrollPane scrollPaneTable = new JScrollPane();
 		scrollPaneTable.setEnabled(false);
-		frame.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
+		frmSalas.getContentPane().add(scrollPaneTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
