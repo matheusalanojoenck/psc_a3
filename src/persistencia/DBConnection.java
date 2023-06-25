@@ -430,6 +430,21 @@ public class DBConnection {
 		executeUpdate(query);
 	}
 	
+	public List<String> diaSemanaProfessor(int id_professor){
+		List<String> diaSemana = new ArrayList<String>();
+		String query = String.format("SELECT `diaSemana` FROM `turmas` WHERE professor = '%d';", id_professor);
+		ResultSet resultset = executeQuery(query);
+		try {
+			while (resultset.next()) {
+
+				diaSemana.add(resultset.getString("diaSemana"));
+			}
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao diaSemanaProfessor(int id_professor) |" + e.getMessage());
+		}
+		return diaSemana;
+	}
+	
 	private void executeUpdate(String query) {
 		try {
 			statement.executeUpdate(query);
@@ -440,6 +455,7 @@ public class DBConnection {
 			
 		}
 	}
+	
 	private ResultSet executeQuery(String query) {
 		ResultSet resultset = null;
 		try {

@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -144,19 +146,26 @@ public class TurmasView {
 				
 				db = new DBConnection();
 				db.conectarMariaDB();
-				Professor p = db.listarProfessor(id_professor);
-				Curso c = db.listarCurso(id_curso);
-				Sala s = db.listarSala(id_sala);
+				List<String> diasAulaProfessor = db.diaSemanaProfessor(id_professor);
 				
+				if (diasAulaProfessor.contains(diaSemana)) {
+					JOptionPane.showMessageDialog(null, professor + " já tem uma turma dacastrada na " + diaSemana);
+					db.desconectar();
+				}else {
+					Professor p = db.listarProfessor(id_professor);
+					Curso c = db.listarCurso(id_curso);
+					Sala s = db.listarSala(id_sala);
+					
+					Turma turma = new Turma();
+					turma.setDiaSemana(DiasSemana.valueOf(diaSemana));
+					turma.setProfessor(p);
+					turma.setCurso(c);
+					turma.setSala(s);
+					
+					db.inserirTurma(turma);
+					db.desconectar();
+				}
 				
-				Turma turma = new Turma();
-				turma.setDiaSemana(DiasSemana.valueOf(diaSemana));
-				turma.setProfessor(p);
-				turma.setCurso(c);
-				turma.setSala(s);
-				
-				db.inserirTurma(turma);
-				db.desconectar();
 				
 				diaSemanaComboBox.setSelectedItem("");
 				professorComboBox.setSelectedItem("");
