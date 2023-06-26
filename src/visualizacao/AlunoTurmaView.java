@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -119,8 +121,16 @@ public class AlunoTurmaView {
 				
 				db = new DBConnection();
 				db.conectarMariaDB();
-				db.inserirAluno_turma(id_aluno, id_turma);
-				db.desconectar();
+				
+				if(db.capacidadeSala(id_turma) == db.qtdAlunosTurma(id_turma)) {
+					JOptionPane.showMessageDialog(null, "Turma já esta com capacidade maxima!");
+					db.desconectar();
+				}else {
+					db.inserirAluno_turma(id_aluno, id_turma);
+					db.desconectar();
+				}
+				
+				
 				
 				atualizaTable(id_turma);
 			}

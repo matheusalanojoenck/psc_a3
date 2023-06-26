@@ -430,6 +430,35 @@ public class DBConnection {
 		executeUpdate(query);
 	}
 	
+	public int capacidadeSala(int id_turma) {
+		String query = String.format("SELECT capacidade FROM turmas INNER JOIN salas WHERE turmas.id = %d;", id_turma);
+		ResultSet resultset = executeQuery(query);
+		int capacidade = 0;
+		try {
+			resultset.next();
+			capacidade = resultset.getInt("capacidade");		
+			
+		}catch (Exception e) {
+			System.out.println("Erro na funçao capacidadeSala(int id_turma) |" + e.getMessage());
+		}
+		return capacidade;
+	}
+	
+	public int qtdAlunosTurma(int id_turma) {
+		String query = String.format("SELECT COUNT(*) AS qtd FROM `aluno_turma` WHERE turmas_id = %d;", id_turma);
+		ResultSet resultset = executeQuery(query);
+		int qtd = 0;
+		try {
+			resultset.next();
+			qtd = resultset.getInt("qtd");		
+			
+		}catch (Exception e) {
+			System.out.println("Erro no while da funçao qtdAlunosTurma(int id_turma) |" + e.getMessage());
+		}
+		
+		return qtd;
+	}
+	
 	public List<String> diaSemanaProfessor(int id_professor){
 		List<String> diaSemana = new ArrayList<String>();
 		String query = String.format("SELECT `diaSemana` FROM `turmas` WHERE professor = '%d';", id_professor);
